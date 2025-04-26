@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>弹窗</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .selected-text {
+            color: #666;
+            margin-bottom: 20px;
+            word-wrap: break-word;
+            text-align: left;
+            max-height: 100px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="popup-content">
+        <h2>选中的文本</h2>
+        <div id="selectedText" class="selected-text">等待文本...</div>
+        <button onclick="window.close()">关闭</button>
+    </div>
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        // 监听文本更新事件
+        ipcRenderer.on('update-text', (event, text) => {
+            console.log('Received text:', text);
+            const textElement = document.getElementById('selectedText');
+            if (textElement) {
+                textElement.textContent = text || '没有选中文本';
+                console.log('Text updated:', textElement.textContent);
+            }
+        });
+    </script>
+</body>
+
+</html>
